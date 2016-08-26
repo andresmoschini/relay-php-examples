@@ -5,8 +5,8 @@ ENV DOPPLERRELAY_USERNAME myusername@mydomain.com
 ENV DOPPLERRELAY_PASSWORD my_api_key
 
 # Copy current code
-WORKDIR /usr/src/php-smtp-cli-example
+WORKDIR /usr/src/php-swiftmailer-smtp-cli-example
 COPY . .
 
 # Example script
-CMD [ "php", "./php-smtp-cli-example.php" ]
+CMD [ "php", "./php-swiftmailer-smtp-cli-example.php" ]
