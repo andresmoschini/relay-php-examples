@@ -6,14 +6,25 @@ $apikey = getenv('DOPPLERRELAY_APIKEY');
 
 $url = "http://api.dopplerrelay.com/accounts/$accountId/messages";
 
+$path = '2Libros.zip';
+$data = file_get_contents($path);
+$base64 = base64_encode($data);
+
 $data = array(
     'from_name' => 'Your Name',
-    'from_email' => 'test@example.com',
+    'from_email' => 'amoschini@makingsense.com',
     'recipients' => array(
         array(
             'type' => 'to',
-            'email' => 'test@example.com',
+            'email' => 'andresmoschini@gmail.com',
             'name' => 'Test Recipient'
+        )
+    ),
+    'attachments' => array(
+        array(
+            'filename' => $path,
+            'base64_content' => $base64,
+            'type' => 'application/x-zip-compressed'
         )
     ),
     'subject' => 'Testing Doppler Relay',

@@ -2,7 +2,9 @@
 
 // PHP Mailer previously installed
 // See https://github.com/DopplerRelay/docker-php/blob/master/Dockerfile
-include_once "/usr/lib/vendor/phpmailer/phpmailer/PHPMailerAutoload.php";
+//include_once "/usr/lib/vendor/phpmailer/phpmailer/PHPMailerAutoload.php";
+include_once "/usr/share/php/libphp-phpmailer/PHPMailerAutoload.php";
+//require 'PHPMailerAutoload.php';
 
 // Get username and password from environment variables
 $username = getenv('DOPPLERRELAY_USERNAME');
@@ -13,12 +15,10 @@ $host = 'smtp.dopplerrelay.com';
 $port = 587;
 
 // Custom data
-$fromEmail = 'you@yourdomain.com';
-$fromName = 'Your Name';
-$to1Email = 'recipient1@example.com';
+$fromEmail = 'amoschini@makingsense.com';
+$fromName = 'Andres';
+$to1Email = 'andresmoschini@gmail.com';
 $to1Name = 'Recipient1 Name';
-$to2Email = 'recipient2@example2.com';
-$to2Name = 'Recipient2 Name';
 $subject = 'Hello from Doppler Relay, PHP Mailer!';
 $text = "Doppler Relay speaks plaintext";
 $html = "Doppler Relay speaks <b>HTML</b>";
@@ -35,7 +35,6 @@ $mail->Password = $password;
 $mail->From = $fromEmail;
 $mail->FromName = $fromName;
 $mail->AddAddress($to1Email, $to1Name);
-$mail->AddAddress($to2Email, $to2Name);
 $mail->IsHTML(true);
 $mail->Subject = $subject;
 $mail->Body = $html;
