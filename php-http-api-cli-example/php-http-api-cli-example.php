@@ -47,5 +47,10 @@ $options = array(
 $context  = stream_context_create($options);
 
 $result = file_get_contents($url, false, $context);
+$headers = $http_response_header;
 
+echo "==== HEADERS ====";
+var_dump($headers);
+
+echo "==== BODY ====";
 var_dump($result);
