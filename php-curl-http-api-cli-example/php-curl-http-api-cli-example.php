@@ -1,5 +1,4 @@
 <?php
-// CURL-less method with PHP5
 
 $accountId = getenv('DOPPLERRELAY_ACCOUNT_ID');
 $apikey = getenv('DOPPLERRELAY_APIKEY');
@@ -35,16 +34,18 @@ $data = array(
     'html' => '<a href="https://www.dopplerrelay.com/">Doppler Relay</a> is great!'
 );
 
-$options = array(
-    'http' => array(
-        'header' => "Authorization: token $apikey\r\nContent-type: application/json\r\n",
-        'method' => 'POST',
-        'content' => json_encode($data)
-    )
-);
+$data_string = json_encode($data);                                                                                   
+                                                                                                                     
+$ch = curl_init($url);                                                                      
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+    'Content-Type: application/json',                                                                                
+    'Authorization: token '.$apikey,
+	'Content: ' . strlen($data_string))
+);                                                                                                                   
+                                                                                                                    
+$result = curl_exec($ch);
 
-$context  = stream_context_create($options);
-
-$result = file_get_contents($url, false, $context);
-
-var_dump($result);
+print_r($result);
