@@ -3,8 +3,8 @@
 
 $accountId = getenv('DOPPLERRELAY_ACCOUNT_ID');
 $apikey = getenv('DOPPLERRELAY_APIKEY');
-
-$url = "http://api.dopplerrelay.com/accounts/$accountId/messages";
+$baseUrl = "http://api.dopplerrelay.com";
+$url = "$baseUrl/accounts/$accountId/messages";
 
 $file1 = file_get_contents('El ingenioso hidalgo don Quijote de la Mancha.zip');
 $file2 = file_get_contents('El ingenioso hidalgo don Quijote de la Mancha.pdf');
@@ -49,20 +49,33 @@ $context  = stream_context_create($options);
 $result = file_get_contents($url, false, $context);
 $headers = $http_response_header;
 
-echo "==== HEADERS ====";
-var_dump($headers);
-
-echo "==== BODY ====";
-var_dump($result);
-
 $matches = array();
 preg_match('#HTTP/\d+\.\d+ (\d+)#', $headers[0], $matches);
 $statusCode = intval($matches[1]);
 
 if ($statusCode >= 200 && $statusCode < 300) {
-    echo "**** SUCCESS ****";
+    echo "\r\n**** SUCCESS ****\r\n";
+    $decodeResult = json_decode($result, true);
+    echo "==== " . $decodeResult['message'] . " ====\r\n";
+    echo "MessageId: " . $decodeResult['createdResourceId'] . "\r\n";
+    echo "Delivery URLs: \r\n";
+    foreach($decodeResult['_links'] as $key => $value) {
+        if (strpos($value['rel'], 'rels/get-delivery') !== false) {
+            echo "\t" . $baseUrl . $value['href'] . "\r\n";
+        }
+    }
 } else if ($statusCode >= 400) {
-    echo "**** ERROR ****";
+    echo "\r\n**** ERROR ****\r\n";
+    echo "==== HEADERS ====";
+    var_dump($headers);
+
+    echo "==== BODY ====";
+    var_dump($result);
 } else  {
-    echo "**** UNEXPECTED STATUS CODE ****";
+    echo "\r\n**** UNEXPECTED STATUS CODE ****\r\n";
+    echo "==== HEADERS ====";
+    var_dump($headers);
+
+    echo "==== BODY ====";
+    var_dump($result);
 }
