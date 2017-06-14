@@ -39,7 +39,8 @@ $options = array(
     'http' => array(
         'header' => "Authorization: token $apikey\r\nContent-type: application/json\r\n",
         'method' => 'POST',
-        'content' => json_encode($data)
+        'content' => json_encode($data),
+        'ignore_errors' => true
     )
 );
 
