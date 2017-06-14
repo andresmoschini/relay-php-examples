@@ -54,3 +54,15 @@ var_dump($headers);
 
 echo "==== BODY ====";
 var_dump($result);
+
+$matches = array();
+preg_match('#HTTP/\d+\.\d+ (\d+)#', $headers[0], $matches);
+$statusCode = intval($matches[1]);
+
+if ($statusCode >= 200 && $statusCode < 300) {
+    echo "**** SUCCESS ****";
+} else if ($statusCode >= 400) {
+    echo "**** ERROR ****";
+} else  {
+    echo "**** UNEXPECTED STATUS CODE ****";
+}
